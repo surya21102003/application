@@ -1,0 +1,231 @@
+docker -v {for knwoing version}
+docker {lists of options for  the docker commands}
+docker cp {for copying some filels}
+docker create{create new container}
+docker login{to login docker registery}
+docker volume ls{2nd word mention which you will do in docker ,ls means list ,}
+docker volume helpl{it will givr all list of commands for voluume}syntax ==docker volume commands{create,ls,inspect etc}
+docker image help{same like above}
+docker info{it gives client allinformation in our sysytem}
+docker system  help{it will givr ouur sytem info,in our dokcker}
+docker stats {realtime usage of continor or images}
+
+
+========================================={now start learnign contianor}===============================================================
+image fror learning container;***
+
+ images will store in local docker ;
+sudo docker search busapp{searching image for pull and use frompublic repositoryies} 
+sudo docker images{checking images if in image presnet in our local or not}
+sudo docekr pull imagename{for downlading images}
+docker system df{showing disk usage for images}
+
+containor:***
+
+command-{create -for creating only , run == creating and running ,ps ==giving running containor full detailsls, ps -a ==giving all containor running gand  non running
+cp==copy files into from local for move  to containor},stop== stop the containor,start ==containor}
+sudo docker command ;
+sudo docker run -d --name conatinorname imagename(like webi or applicaion name like app) after this we canot run this page so we need to move another shell
+-d{ telling background containor will runing}
+sudo docker ps -a {shwoing all containor running and non running both}
+
+login and manage running containor:***
+
+{exec -login into containor}
+sudo docker exec -it containorname/shell name(like:/bin/bash){shellnamefor after moving into contianor shel path}
+docker cp source/containorname/tmp/{source ==filename}
+sudo docker cp conname:/tmp/filename . {copy from contianor to local}
+sudo doceker stop containorname{stop the containor name}
+sudo docker start containorname{start the containor}
+
+
+system:***
+
+{df-showing disks space  ,state==usage,events=problem relted contnanor ,rm==remove containor ,rmi==remove image,prune==for delete containor}
+running containor we canot rermove
+sudo docker system df or state
+sudo docker rm -f contianorname{-f == to eremove runnig con forcefully}
+sudo docker state containorr
+sudo docker prune
+
+log continaor:**
+{checking logs}
+sudo dockekr logs conatniornaem
+
+
+================================={image learning}======================================
+[,rmi -delete images,-q =quite output,login 0r logout in private public registry]
+
+sudo docker search busapp{searching image for pull and use frompublic repositoryies} 
+sudo docker images{checking images if in image presnet in our local or not}
+sudo docekr pull imagename{for downlading images}
+docker system df{showing disk usage for images}
+
+
+
+docker run -d -it --name containonrname -p 82:80 imagename:tag[containorname==use to create con,-p=for port ,82=prefix for accessing port,80 ==sufffix listeningn port of contanor ]
+
+sudo docker inspect imageid[complte details for docker image,we can see for knwoing port of our image ]
+sudo docker history containor:latest[knowing history of latest all channges]
+
+sudo docker save imagename[or]id > busapp-backup[filelname].tar  [for backup image]
+sudo docker load -l busapp-bkp.tar [ reload images from local  ]
+
+sudo docker rmi imageids[single or multiple image ids we can give]{delete images}
+
+sudo dockker rmi $(sudo ^Ccker images -a -q){delete all images}
+
+sudo docker imaegs -a -q {giving all images id}
+sudo docker rmi $(sudo docker images -a -q){delete all images make emoty}
+sudo docker commit containorid imagename:tag[we have to give image and tag  name of new  comited images ]{commit the changes}
+
+sudo docker push imagename:tag{wwe need authwnwtication for push orelse failed,we have first login in docker website }
+sudo docker login[it wil ask username,pasasword]
+sudo docker tag  imagename:tag newimagename[like =imagename:tag]{for ranaming image}
+
+sudo docker push imagename:tag{pushing into regoistery after authenticaiton}
+sudo docker info{it giving current info like which registry we are using}
+
+=============createor customize docker images using dockkerfile:====================
+
+syntax=== vim dockerfile{for create docker file}
+{just a text file ,its used to wirite set of instruction for create docker image}
+
+search====wwww.learnitguide.net{use to lelarn docker file instruction}
+in that file{
+
+
+from :centos:latest
+run yum update
+run yum install -y httdp
+copy index.html /var/www/html/index.html
+
+expose 80
+
+cmd or entrypoint apachectl -d FOREGROUND
+
+
+
+run:'
+run:
+copy:
+arg:
+cmd:
+
+
+}
+
+
+sudo docekr build .  or -f/another directory[for direct to another directory for docker file]{dot tells in current directiry dockerfile should present}
+
+sudo docker build -t imagename:tag .{another way to givr name to images}
+
+
+
+==========================docker networking and types==========================================================
+[create,connect,disconnect,prune etc]
+
+{ls=showing all networks,ping =use to get reply,curl =use to accessing]
+
+sudo docker network ls{lista all available networks]
+
+sudo docker network --help{for knowing all commands]
+sudo docker network create test-bridge
++++default bridge docker zero=+++
+sudo docker run -d -it --network=test_bridge --name container1 httpd{acsss wihtin docker but not overthe network]
+
+sudo docker run -d -it --name continor1 -p 8080:80  httpd 
+
+
+
+===============================docker volume and types=======================================================
+
+[create,inspect,ls,prune,rm]
+
+sudo docker volume create data_val[just create dirctory]
+volume;;;
+sudo docker -d -it --name ubuntu1 --mount source=volmename, destination=/data /bin/bash{source is used to volumename,destination  set the source in the place}
+bind mount;;;;
+sudo docker run -d -it --name containporname -v sorcedirectory=mountinsidecontnor file dest imagename 
+
+
+==================================contianor orchestraction and docker swarm==================================
+
+
+[node ls,info,demote ,promote,inspect,update,]
+for containor level we have user service comanad[create,logs,inspect,ps,rm,rollback,update ,scale]
+swarm is  orchestraction tool ,
+
+install dokcer swarm 1 master node ,2 worker node;
+
+sudo docker swarm init --advertise-addr masternodeipaddresss
+sudo dockcer node ls [list about master  node  and worker node]
+
+sudo master service create --replicas 2 -p 80:80 --name contianorname imagename[it will 2 create conttanor for conatnorname]
+                           or --mode global 
+sudo docker service ls
+sudo docker service ps contianorname
+
+sclings*******;
+scaleup**=sudo docker service scale servicename=replicas.no[scale form increase replica number]
+scaledown**=sudo docker service scale serivcename=replica .n0{we can give less number for scale down}
+
+rolling update***[we need know old version and new version for update]
+
+rollup**=sudo docker service scale update --image imagename:higherversion servicename
+rollback***=sudo docker service scale rollback--image servicename
+
+
+node reelated management**;
+
+[node ls,info,demote ,promote,inspect,update,]
+
+sduo docker node promote nodename;
+
+sduo docker node demote nodename;
+
+update funtions**; methods names[drain ,pause,active]
+sudo docker update  --availability drain(methodname) nodename{mkae empty,and delted things will move  to another availabitlity node]
+                               pause or active
+
+
+======================================docker compose===========================================================
+
+[up,down,restart,start,stop,logs]
+vim yamldirectoryname [move to ymlfile]
+
+its like yml file to write all properties
+sudo apt-cache search docker-compose[checking compose file is there or not]
+sudo apt-get install docker-compose[forinstaling]
+
+sudo docker-compose -f myapp.yml up -d[it made working of all continaors]
+                                --down [down the continore]
+                                --restart[restart allservice]
+sudo docker-compose -f myapp.yml restartt serficvename[restart specific service]
+sudo docker-compose -f myapp.yml[getiing all info]
+
+sudo docker-compose -f myapp.yml up -d[it will run after update also]
+
+sudo docker-compose -f myapp.yml config[it will not run like up comand but its giving errors]
+
+sudo docker-compose version[gnving docker engine verosn and all info]
+
+
+===============================cpu and memeory resource allocation============================================
+
+commansds=[inspect]
+
+sudo docker info
+docker run --memory-reservation=256m -m 513m -d--name connmae imgname;[m is used to allocate  memory ]
+
+sudo docker run --cpu-shares=1000 --cpus=1.2 -d--name connmae imgname;[specifing only use 1.2 perntage core power]
+
+
+
+
+
+
+
+
+
+
